@@ -12,6 +12,7 @@ class Homepage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
+            shape: OutlineInputBorder(borderRadius: BorderRadius.circular(20),),
             context: context,
             builder: (context) {
               return CustomShow();
