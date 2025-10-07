@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nots/Models/note_model.dart';
 import 'package:nots/Views/EditNoteView.dart';
 import 'package:nots/Widgets/EditBodyView.dart';
+import 'package:nots/cubits/notes_cubit/notes_cubit.dart';
 
 class NoteItem extends StatelessWidget {
-  const NoteItem({super.key});
+  const NoteItem({super.key , required this.note});
   // int date = DateTime.now().day ;
+  final NoteModal note  ;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder:(context) => Editnoteview(), ));
+        Navigator.push(context, MaterialPageRoute(builder:(context) => Editnoteview(note: note,), ));
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.yellow.withOpacity(.7),
+          color: Color(note.color),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -25,7 +29,7 @@ class NoteItem extends StatelessWidget {
                 title: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                    "Flutter Tips",
+                    note.title,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 30,
@@ -34,14 +38,17 @@ class NoteItem extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  "Build your career with imad hassan",
+                  note.body,
                   style: TextStyle(
                     color: Colors.black.withOpacity(.4),
                     fontSize: 20,
                   ),
                 ),
                 trailing: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    note.delete();
+                    BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+                  },
                   icon: Icon(Icons.delete, color: Colors.black, size: 40),
                 ),
               ),
@@ -49,7 +56,7 @@ class NoteItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 30, top: 10),
                 child: Text(
-                  "April 16 , 2025",
+                  note.date,
                   style: TextStyle(
                     color: Colors.black.withOpacity(.5),
                     fontSize: 17,

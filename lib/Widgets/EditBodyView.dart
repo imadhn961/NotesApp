@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:nots/Models/note_model.dart';
+import 'package:nots/Widgets/edit_note_colors_list_view.dart';
 
 class Editbodyview extends StatelessWidget {
-  const Editbodyview({super.key});
-
+  const Editbodyview({super.key,required this.note});
+ final NoteModal note;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 30,),
-        TextField(
+        TextFormField(
+          onChanged: (value) {
+            note.title = value;
+            note.save();
+          },
           cursorHeight: 20,
           cursorColor: Colors.lightBlueAccent,
           decoration: InputDecoration(
             hint: Text(
-              "Enter Note Title",
+              note.title,
               style: TextStyle(color: Colors.lightBlueAccent.withOpacity(.3)),
             ),
             focusedBorder: OutlineInputBorder(
@@ -27,13 +33,18 @@ class Editbodyview extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20),
-        TextField(
-          maxLines: 15,
+        TextFormField(
+          minLines: 5,
+          maxLines: null,
           cursorHeight: 20,
           cursorColor: Colors.lightBlueAccent,
+          onChanged: (value) {
+            note.body = value;
+            note.save();
+          },
           decoration: InputDecoration(
             hint: Text(
-              "Message",
+              note.body,
               style: TextStyle(color: Colors.lightBlueAccent.withOpacity(.3)),
             ),
             focusedBorder: OutlineInputBorder(
@@ -45,6 +56,12 @@ class Editbodyview extends StatelessWidget {
               borderSide: BorderSide(color: Colors.white),
             ),
           ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        EditNoteColorsList(
+          note: note,
         ),
 
       ],
